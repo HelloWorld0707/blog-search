@@ -1,0 +1,38 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.4'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'blog.search'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// spring boot
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	
+	// lombok
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    
+    // json
+	implementation group: 'org.json', name: 'json', version: '20230227'
+	
+	// apache http
+	implementation 'org.apache.httpcomponents:httpclient:4.5.14'
+	
+	// db
+    runtimeOnly 'com.h2database:h2'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
