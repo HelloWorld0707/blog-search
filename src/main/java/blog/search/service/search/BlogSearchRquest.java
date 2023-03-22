@@ -6,11 +6,9 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
-@EqualsAndHashCode
 public class BlogSearchRquest {
 
 	@NotBlank
@@ -21,15 +19,15 @@ public class BlogSearchRquest {
 
 	@Min(1)
 	@Max(50)
-	private int page = 1;
+	private Integer page = 1;
 
 	@Min(1)
 	@Max(50)
-	private int size = 10;
+	private Integer size = 10;
 
-	public BlogSearchRquest(String query, String sort, int page, int size) {
+	public BlogSearchRquest(String query, String sort, Integer page, Integer size) {
 		this.query = query;
-		this.sort = Objects.requireNonNullElse(sort, "recency");
+		this.sort = Objects.requireNonNullElse(sort, "accuracy");
 		this.page = Objects.requireNonNullElse(page, 1);
 		this.size = Objects.requireNonNullElse(size, 10);
 	}
