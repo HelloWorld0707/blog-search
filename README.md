@@ -5,8 +5,8 @@
 
 ### URL
 ```
-GET /search/rank
-/search/blog
+GET /search/blog
+Host: localhost:8080
 ```
  - 키워드를 통해 검색된 블로그.
  - Kakao API에 장애가 발생한 경우, 네이버 블로그 검색 API를 호출합니다.
@@ -26,7 +26,7 @@ GET /search/rank
 | page_number | integer | 결과 페이지 번호 |
 | page_size | integer | 한 페이지에 보여지는 문서 수 |
 | total_size | integer | 전체 페이지 수 |
-| domain | 호출된 API (Kakao, Naver) |
+| domain | String | 호출된 API (Kakao, Naver) |
 | is_end | boolean | 마지막 페이지 여부 |
 
 ### Response sample
