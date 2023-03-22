@@ -3,7 +3,6 @@ package blog.search.service.rank;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import blog.search.repository.Rank;
 import blog.search.repository.RankRepository;
-import blog.search.service.api.kakao.KakaoConv;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
