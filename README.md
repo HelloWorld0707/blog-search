@@ -1,6 +1,9 @@
 # blog-search
-블로그 
+블로그 서비스 구현 어쩌구.
 Java11, Gradle, H2
+
+# Installation
+TODO: jar 첨부 필요
 
 # API
 
