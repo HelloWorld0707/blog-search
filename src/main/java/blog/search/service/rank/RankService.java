@@ -1,9 +1,9 @@
 package blog.search.service.rank;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,42 +13,41 @@ import org.springframework.stereotype.Service;
 
 import blog.search.repository.Rank;
 import blog.search.repository.RankRepository;
+import blog.search.service.api.kakao.KakaoConv;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Service
 public class RankService {
 
+	private final RankConv rankConv;
+	
 	@Autowired
 	private RankRepository rankRepository;
-	
+
 	@Transactional
-	public int UpdateQueryView(String query) throws Exception {
+	public Rank UpdateQueryView(String query) throws Exception {
 		Optional<Rank> rank = rankRepository.findByQuery(query);
 
 		if (rank.isEmpty()) {
-			Rank newRank = new Rank(query);
-			rankRepository.save(newRank);
-			return 1;
+			Rank newRank = Rank.withQuery(query);
+			return rankRepository.saveAndFlush(newRank);
 		}
 
-		return rankRepository.updateView(rank.get().getRank_id());
+		return rank.get().addView(1);
 	}
 
 	public List<RankResponse> GetTopXViewQuery(int size) {
-		List<RankResponse> list = new ArrayList<RankResponse>();
 		PageRequest page = PageRequest.of(0, size, Sort.by("view").descending());
 		Page<Rank> ranks = rankRepository.findAll(page);
-
-		for (Rank rank : ranks) {
-			list.add(new RankResponse(rank.getQuery(), rank.getView()));
-		}
-
-		return list;
+		
+		return rankConv.ConvTopXViewResponse(ranks);
 	}
-
-	// 
+	
 	@Transactional
-	public Rank FindByQuery(String query) throws NoSuchElementException {
+	protected Rank FindByQuery(String query) throws NoSuchElementException {
 		return rankRepository.findByQuery(query).get();
 	}
+
 }

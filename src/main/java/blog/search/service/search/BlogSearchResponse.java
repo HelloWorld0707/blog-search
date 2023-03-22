@@ -11,20 +11,10 @@ public class BlogSearchResponse {
 	private int page_number;
 	private int page_size;
 	private int total_size;
+	private boolean is_end;
 	private List<BlogItem> result;
 	private SearchDomain domain;
-
-	@Getter
-	@AllArgsConstructor
-	public static class BlogItem {
-		private String title;
-		private String contents;
-		private String url;
-		private String blog_name;
-		private String thumbnail;
-		private String datetime;
-	}
-
+	
 	public enum SearchDomain {
 		KAKAO("kakao"), NAVER("naver");
 

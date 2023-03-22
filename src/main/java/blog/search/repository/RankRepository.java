@@ -17,8 +17,4 @@ public interface RankRepository extends JpaRepository<Rank, Long> {
 
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	Optional<Rank> findByQuery(String query);
-
-	@Modifying(clearAutomatically = true)
-	@Query("update Rank r set r.view = r.view + 1 where r.rank_id = :RankId")
-	int updateView(@Param(value = "RankId") Long RankId);
 }

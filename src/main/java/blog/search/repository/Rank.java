@@ -12,8 +12,6 @@ import lombok.Getter;
 @Getter
 @Table(name = "RANK")
 public class Rank {
-	protected Rank() {
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +24,20 @@ public class Rank {
 	@Column(name = "view")
 	private Long view;
 
-	public Rank(String query) {
+	public Rank addView(int view) {
+		this.view += view;
+		return this;
+	}
+
+	public static Rank withQuery(String query) {
+		return new Rank(query);
+	}
+
+	private Rank(String query) {
 		this.query = query;
 		this.view = (long) 1;
+	}
+
+	protected Rank() {
 	}
 }

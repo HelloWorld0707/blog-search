@@ -17,31 +17,35 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import blog.search.service.search.BlogSearchResponse;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class KakaoApiService {
+	private final KakaoConv kakaoConv;
+
 	// log
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	// base URI
 	private String schema = "https";
 	private String host = "dapi.kakao.com";
-	
-	public JSONObject SearchBlog(KakaoSearchBlogRequest param) throws IOException {
+
+	public BlogSearchResponse SearchBlog(KakaoSearchBlogRequest param) throws IOException {
 		JSONObject resJson = null;
 		final String uriPath = "v2/search/blog";
-		
+
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		try {
 			RequestBuilder getBuilder = RequestBuilder.get();
 
 			// build URI
 			URI uri = new URIBuilder().setScheme(schema).setHost(host).setPath(uriPath).build();
-
-			// set URI
 			getBuilder.setUri(uri);
 
 			// set header
-			addHeader(getBuilder);
+			param.addHeader(getBuilder);
 
 			// set param
 			param.addParam(getBuilder);
@@ -66,13 +70,6 @@ public class KakaoApiService {
 			httpclient.close();
 		}
 
-		return resJson;
-	}
-
-	private void addHeader(RequestBuilder request) {
-		request.addHeader("Content-Type", "application/json;charset=UTF-8");
-
-		final String token = "a6d3dac6a9281d2a3f652972f8771420";
-		request.addHeader("Authorization", "KakaoAK " + token);
+		return kakaoConv.ConvBlogSearchResponse(resJson, param.getPage(), param.getSize());
 	}
 }

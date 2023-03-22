@@ -17,8 +17,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import blog.search.service.search.BlogSearchResponse;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class NaverApiService {
+	private final NaverConv naverConv;
 
 	// log
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -27,7 +32,7 @@ public class NaverApiService {
 	private String schema = "https";
 	private String host = "openapi.naver.com";
 
-	public JSONObject SearchBlog(NaverSearchBlogRequest param) throws IOException {
+	public BlogSearchResponse SearchBlog(NaverSearchBlogRequest param) throws IOException {
 		JSONObject resJson = null;
 		final String uriPath = "v1/search/blog.json";
 
@@ -42,7 +47,7 @@ public class NaverApiService {
 			getBuilder.setUri(uri);
 
 			// set header
-			addHeader(getBuilder);
+			param.addHeader(getBuilder);
 
 			// set param
 			param.addParam(getBuilder);
@@ -67,16 +72,6 @@ public class NaverApiService {
 			httpclient.close();
 		}
 
-		return resJson;
-	}
-
-	private void addHeader(RequestBuilder request) {
-		request.addHeader("Content-Type", "application/json;charset=UTF-8");
-
-		final String clientId = "vezR1xWlUUA6L6Uq35Y6";
-		request.addHeader("X-Naver-Client-Id", clientId);
-
-		final String clientSecret = "PDTj1rmmtR";
-		request.addHeader("X-Naver-Client-Secret", clientSecret);
+		return naverConv.ConvBlogSearchResponse(resJson, param.getStart(), param.getDisplay());
 	}
 }

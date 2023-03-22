@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import blog.search.repository.Rank;
+import jakarta.transaction.Transactional;
 
 @SpringBootTest
 public class RankServiceTest {
@@ -18,8 +19,9 @@ public class RankServiceTest {
 
 	@DisplayName("rank update")
 	@Test
+	@Transactional
 	void TestUpdateAndFind() throws Exception {
-		final String testQuery = "TEST";
+		final String testQuery = "DB_TEST";
 
 		rankService.UpdateQueryView(testQuery);
 		Rank rank = rankService.FindByQuery(testQuery);
@@ -30,10 +32,11 @@ public class RankServiceTest {
 
 	@DisplayName("get rank top X view")
 	@Test
+	@Transactional
 	void TestGetTopXViewQuery() throws Exception {
-		final String testQuery1 = "TEST1";
-		final String testQuery2 = "TEST2";
-		final String testQuery3 = "TEST3";
+		final String testQuery1 = "DB_TEST1";
+		final String testQuery2 = "DB_TEST2";
+		final String testQuery3 = "DB_TEST3";
 
 		for (int i = 0; i < 10; i++) {
 			rankService.UpdateQueryView(testQuery1);
